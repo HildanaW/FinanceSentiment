@@ -138,19 +138,19 @@ get_sentiments("nrc") %>%
 
 get_sentiments("bing") %>% 
   count(sentiment)
-
+  
 bing_word_counts <- df_2 %>%
   inner_join(get_sentiments("bing")) %>%
   count(word, sentiment, sort = TRUE) %>%
-  ungroup()
+  acast(word~sentiment, value.var="n",fill=0)%>%
+  comparison.cloud(colors=c("gray20","gray80"), maxwords = 100)
 
-bing_word_counts %>%
-  anti_join(stop_words) %>%
-  count(word) %>%
-  with(wordcloud(word, n, max.words = 500))
+
+
 ```
-![Rplot01](https://user-images.githubusercontent.com/108307724/223019131-d0462bf4-5a9f-487c-954d-0a1be82eb8f6.png)
-
+![newwc](https://user-images.githubusercontent.com/108307724/223025700-e65746f4-4832-465f-80b0-7fc4f66abad6.png)
+  - The word cloud analysis shows thatwords associated with stong positive sentiment included words such as protection, promised conveneience and savings.</br>
+  - The opposite side of the same chart showed association of words such as debt, incorrect, fraud, unable, scam, and false with negative sentiment.
 * Chart 3: Shiny App
 
 
