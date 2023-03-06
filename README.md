@@ -152,8 +152,47 @@ bing_word_counts <- df_2 %>%
   - The word cloud analysis shows thatwords associated with stong positive sentiment included words such as protection, promised conveneience and savings.</br>
   - The opposite side of the same chart showed association of words such as debt, incorrect, fraud, unable, scam, and false with negative sentiment.
 * Chart 3: Shiny App
+```
+dataset<-df_2
+column_names<-colnames(df_2) #for input selections
 
+
+ui<-fluidPage( 
+  
+  titlePanel(title = "Consumer Complaints on Financial Products"),
+  
+  fluidRow(
+    column(2,
+           selectInput('X', 'Choose X',column_names,column_names[1]),
+           selectInput('Y', 'Choose Y',column_names,column_names[2]),
+           selectInput('Splitby', 'Split By', column_names,column_names[4])
+    ),
+    column(4,plotOutput('plot_01')),
+    column(6,DT::dataTableOutput("table_01", width = "100%"))
+  )
+  
+  
+)
+
+server<-function(input,output){
+  
+  output$plot_01 <- renderPlot({
+    ggplot(df_2, aes_string(x=input$X, y=input$Y, colour=input$Splitby))+ geom_point()
+    
+    
+    
+    
+    
+  })
+  
+  output$table_01<-DT::renderDataTable(dataset[,c(input$X,input$Y,input$Splitby)],options = list(pageLength = 4))
+}
+
+shinyApp(ui=ui, server=server)
+
+```
 
 
 # Conclusion 
+There is a trend within Finicial products in consumer complaints recieved on Financial products. these trends are associated with positive/negative sentiments based on the issues being complained about as well as the volume of these issues.
 
