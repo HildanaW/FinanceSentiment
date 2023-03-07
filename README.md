@@ -153,8 +153,8 @@ bing_word_counts <- df_2 %>%
   - The opposite side of the same chart showed association of words such as debt, incorrect, fraud, unable, scam, and false with negative sentiment.
 * Chart 3: Shiny App
 ```
-dataset<-df_2
-column_names<-colnames(df_2) #for input selections
+
+column_names<-colnames(cleaned) #for input selections
 
 
 ui<-fluidPage( 
@@ -163,9 +163,9 @@ ui<-fluidPage(
   
   fluidRow(
     column(2,
-           selectInput('X', 'Choose X',column_names,column_names[1]),
-           selectInput('Y', 'Choose Y',column_names,column_names[2]),
-           selectInput('Splitby', 'Split By', column_names,column_names[4])
+           selectInput('X', 'Choose X',column_names,column_names[4]),
+           selectInput('Y', 'Choose Y',column_names,column_names[2])
+           
     ),
     column(4,plotOutput('plot_01')),
     column(6,DT::dataTableOutput("table_01", width = "100%"))
@@ -177,7 +177,7 @@ ui<-fluidPage(
 server<-function(input,output){
   
   output$plot_01 <- renderPlot({
-    ggplot(df_2, aes_string(x=input$X, y=input$Y, colour=input$Splitby))+ geom_point()
+    ggplot(cleaned, aes_string(x=input$X, y=input$Y, colour=input$Splitby))+ geom_smooth()
     
     
     
@@ -185,10 +185,11 @@ server<-function(input,output){
     
   })
   
-  output$table_01<-DT::renderDataTable(dataset[,c(input$X,input$Y,input$Splitby)],options = list(pageLength = 4))
+  output$table_01<-DT::renderDataTable(cleaned[,c(input$X,input$Y,input$Splitby)],options = list(pageLength = 4))
 }
 
 shinyApp(ui=ui, server=server)
+
 
 ```
 
