@@ -28,7 +28,7 @@ df<-readRDS("Consumer_Complaints.rds")
 
 variables <- df%>%
   select(Company, Product,Issue,)
-variables[1:50000, ]
+#variables[1:50000, ]
 
 #storing text as character
 
